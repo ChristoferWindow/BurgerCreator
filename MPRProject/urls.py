@@ -16,8 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from ProjectMPR.views import index
-
+from ProjectMPR.views import add
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index, name="Burgers"),
+    url(r'^$', index, name="burgerIndex"),
+    url(r'^api/burgers/add', add, name="burgerAdd")
 ]

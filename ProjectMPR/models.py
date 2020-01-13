@@ -4,18 +4,29 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 from django.utils import timezone
+
+class Categories(models.Model):
+    name = models.CharField(max_length=100)
+    class Meta:
+        verbose_name = ("Category")
+        verbose_name_plural = ("Categories")
+    def __str__(self):
+        return self.name
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
+    category = models.ForeignKey(Categories, max_length=50, on_delete=models.PROTECT)
     class Meta:
         verbose_name = ("Ingredient")
         verbose_name_plural = ("Ingredients")
     def __str__(self):
         return self.name
+
 class Burger(models.Model):
     title = models.CharField(max_length=250)
-    ingredients = ArrayField(models.CharField(max_length=12, blank=False),size=12,)
+    ingredients = ArrayField(models.CharField(max_length=64, blank=False),size=12,)
     created = models.DateField(default=timezone.now().strftime("%Y-%m-%d"))
-    createdBy = models.ForeignKey(User, models.PROTECT, default=1)
+    createdBy = models.IntegerField(default=1)
     class Meta:
         ordering = ["-title"]
     def __str__(self):
