@@ -216,6 +216,15 @@ button {
     display: block;
     margin-left: 41px;
 }
+.ingredientCategory{
+    list-style-type: none;
+}
+.ingredientName:before{
+    content: '\2014';
+}
+.ingredientName{
+    list-style-type: none;
+}
 .burgerHeader{
     -webkit-box-shadow: 2px 7px 16px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 2px 7px 16px -4px rgba(0,0,0,0.75);
@@ -344,13 +353,19 @@ footer a {
                         <label for="{{ burger.id }}"><span class="burgerName">{{ burger.title }}</span></label>
                     </div>
                     <div>Ingredients:</div>
-                    <ul>
-                        {% for ingredient in burger.ingredients %}
-                             <li >
-                                {{ingredient}}
-                             </li>
-                        {% endfor %}
-                    </ul>
+                    {% regroup ingredients by category as ingredientsGrouped %}
+                       <ul>
+                           {% for ingredientItem in ingredientsGrouped %}
+                              <li class="ingredientCategory">
+                                {{ ingredientItem.grouper }}:
+                                <ul>
+                                  {% for ingredient in ingredientItem.list %}
+                                    <li class="ingredientName">{{ ingredient.name}}</li>
+                                  {% endfor %}
+                                </ul>
+                              </li>
+                           {% endfor %}
+                        </ul>
                 </li>
             {% endfor %}
             </ul>

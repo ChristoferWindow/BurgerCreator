@@ -8,21 +8,9 @@ def index(request):
 
     if request.method == "POST":
         if "burgerAdd" in request.POST:
-            burgerName = request.GET['burgerName']
-
-            if 'ingredientsList' in request.GET:
-                ingredientsList = request.GET.getlist('ingredientsList')
-                createdBy = 1
-                newBurger = Burger(title=burgerName, ingredients=ingredientsList, createdBy=createdBy)
-                newBurger.save()
-
-            return redirect("/") #reloading the page
+            add(request)
         if "burgerDelete" in request.GET:
-            checkedlist = request.GET["checkedbox"]
-
-            for burger_id in checkedlist:
-                burger = Burger.objects.get(id=int(burger_id))
-                burger.delete()
+            delete(request)
     return render(request, "index.html", {"burgers": burgers, "ingredients":ingredients})
 
 def add(request):
@@ -35,6 +23,13 @@ def add(request):
         newBurger.save()
 
     return redirect('/')  # reloading the page
+
+def delete(request):
+    checkedlist = request.GET["checkedbox"]
+
+    for burger_id in checkedlist:
+        burger = Burger.objects.get(id=int(burger_id))
+        burger.delete()
 
 def convert(a):
     it = iter(a)
