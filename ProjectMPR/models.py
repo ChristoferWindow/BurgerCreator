@@ -23,6 +23,7 @@ class Ingredient(models.Model):
         return self.name
 
 class Burger(models.Model):
+    ingredientsLimit = 4
     title = models.CharField(max_length=250)
     ingredients = ArrayField(models.CharField(max_length=64, blank=False),size=12,)
     created = models.DateField(default=timezone.now().strftime("%Y-%m-%d"))
@@ -31,3 +32,6 @@ class Burger(models.Model):
         ordering = ["-title"]
     def __str__(self):
         return self.title
+
+    def isLimitExcceded(self):
+        return self.ingredients.__len__() > self.ingredientsLimit
